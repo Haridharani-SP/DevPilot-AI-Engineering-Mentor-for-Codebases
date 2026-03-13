@@ -1,292 +1,324 @@
-<<<<<<< HEAD
-# 🚀 DevPilot — AI-Powered Developer Onboarding Assistant
+# 🚀 DevPilot — AI Engineering Mentor for Codebases
 
-> *"Understand any codebase in hours, not months."*
+> **Understand any codebase in hours, not months.**
 
-**Team:** The Avengers | **Theme:** Intelligent Systems / Developer Productivity
+DevPilot is an AI-powered developer onboarding assistant that helps engineers quickly understand complex codebases using **RAG-based code intelligence, knowledge gap analytics, and Slack integration**.
 
----
-
-## What Is DevPilot?
-
-DevPilot is an AI Engineering Mentor that helps new developers understand complex codebases instantly. Unlike generic documentation tools, DevPilot provides **contextual engineering guidance** with actual code references, adaptive learning insights, and Slack integration — directly in developers' workflows.
-
-**Problem it solves:** New engineers spend 1–3 months becoming productive because knowledge is scattered across code, wikis, and senior engineers' heads.
-
-**DevPilot's answer:** RAG-powered AI that understands your codebase + Knowledge Gap Analytics + Slack bot = measurable onboarding acceleration.
+Instead of searching through documentation or interrupting senior engineers, developers can simply ask DevPilot.
 
 ---
 
-## Architecture
+# ⚡ The Problem
+
+New engineers joining a team often struggle because:
+
+* Architecture knowledge is undocumented
+* Important decisions are buried in code
+* Senior engineers get interrupted constantly
+* Onboarding takes **1–3 months**
+
+Traditional documentation tools quickly become outdated.
+
+---
+
+# 💡 The Solution
+
+DevPilot acts as an **AI engineering mentor** that understands your codebase and guides developers in real time.
+
+DevPilot provides:
+
+* Contextual code explanations
+* Architecture understanding
+* Knowledge gap detection
+* Personalized onboarding roadmaps
+* Slack integration for daily workflows
+
+Result:
 
 ```
-┌──────────────────────────────────────────────────────────────────┐
-│                        DevPilot System                           │
-│                                                                  │
-│  ┌──────────┐   /ask    ┌─────────────────────────────────────┐ │
-│  │  Slack   │──────────▶│         FastAPI Backend             │ │
-│  │   Bot    │           │                                     │ │
-│  └──────────┘           │  ┌───────────┐  ┌───────────────┐  │ │
-│                         │  │  /query   │  │  /analytics   │  │ │
-│  ┌──────────┐           │  └─────┬─────┘  └───────┬───────┘  │ │
-│  │  React   │◀──────────│        │                │           │ │
-│  │Dashboard │           │  ┌─────▼──────────────────────┐    │ │
-│  └──────────┘           │  │      RAG Pipeline           │    │ │
-│                         │  │  LangChain + FAISS + GPT-4  │    │ │
-│  ┌──────────┐           │  └─────┬──────────────────┬────┘    │ │
-│  │  GitHub  │──ingest──▶│        │                  │         │ │
-│  │   Repo   │           │  ┌─────▼────┐  ┌──────────▼──────┐ │ │
-│  └──────────┘           │  │  Vector  │  │  Knowledge Gap  │ │ │
-│                         │  │  Store   │  │    Analyzer     │ │ │
-│  ┌──────────┐           │  │  (FAISS) │  │   (SQLite DB)   │ │ │
-│  │  Docs /  │──ingest──▶│  └──────────┘  └─────────────────┘ │ │
-│  │  Wikis   │           └─────────────────────────────────────┘ │
-│  └──────────┘                                                    │
-└──────────────────────────────────────────────────────────────────┘
+Onboarding Time ↓
+Developer Productivity ↑
+Knowledge Retention ↑
 ```
 
 ---
 
-## Folder Structure
+# 🧠 Key Features
+
+## AI Codebase Understanding
+
+DevPilot uses a **Retrieval-Augmented Generation (RAG)** pipeline to analyze repositories and answer engineering questions with real code references.
+
+Example:
+
+```
+Developer:
+"How does authentication work?"
+
+DevPilot:
+JWT authentication is implemented in backend/auth.py
+
+Flow:
+Login → Token generation → Middleware validation
+```
+
+---
+
+## Knowledge Gap Analytics
+
+DevPilot identifies what developers don't understand.
+
+Example insights:
+
+```
+Top Knowledge Gaps
+
+1. Authentication flow
+2. Payment service architecture
+3. Deployment pipeline
+```
+
+Mentors can use these insights to improve documentation and training.
+
+---
+
+## Personalized Onboarding Roadmaps
+
+DevPilot generates learning paths automatically.
+
+Example:
+
+```
+Backend Developer Onboarding
+
+Week 1
+• API architecture
+• Database models
+
+Week 2
+• Authentication system
+• Payment workflows
+
+Week 3
+• Deployment pipeline
+```
+
+---
+
+## Slack Integration
+
+Developers can ask questions directly inside Slack.
+
+Example:
+
+```
+@devpilot How does the payment service work?
+```
+
+DevPilot responds instantly with relevant code explanations.
+
+---
+
+# 🏗 System Architecture
+
+```
+Slack Bot
+     │
+     ▼
+FastAPI Backend
+     │
+     ├── RAG Pipeline (LangChain)
+     │
+     ├── Vector Store (FAISS)
+     │
+     └── Knowledge Gap Analyzer
+```
+
+Data sources:
+
+```
+GitHub Repositories
+Documentation
+Internal Wikis
+```
+
+---
+
+# 📁 Project Structure
 
 ```
 devpilot/
+│
 ├── backend/
-│   ├── main.py            # FastAPI app — all API endpoints
-│   ├── rag_pipeline.py    # LangChain + FAISS RAG engine
-│   ├── knowledge_gap.py   # Analytics engine (SQLite)
-│   ├── models.py          # Pydantic request/response models
-│   ├── requirements.txt
-│   └── Dockerfile
+│   ├── main.py
+│   ├── rag_pipeline.py
+│   ├── knowledge_gap.py
+│   └── models.py
 │
 ├── integrations/
-│   ├── slack_bot.py       # Full Slack bot (socket mode)
-│   ├── slack_client.py    # Reusable Slack client
-│   └── Dockerfile
+│   ├── slack_bot.py
+│   └── slack_client.py
 │
 ├── data_ingestion/
-│   ├── ingest.py          # CLI ingestion pipeline
-│   └── github_loader.py   # Deep GitHub repo analyzer
+│   ├── ingest.py
+│   └── github_loader.py
 │
 ├── frontend/
-│   ├── DevPilotDashboard.jsx   # React dashboard component
-│   └── Dockerfile
+│   └── DevPilotDashboard.jsx
 │
-├── .env.example           # Copy to .env and fill in keys
 ├── docker-compose.yml
-├── setup.ps1              # Windows full setup (PowerShell)
-├── start.bat              # Windows quick-start (double-click)
 └── README.md
 ```
 
 ---
 
-## ⚡ Quick Start — Windows
+# ⚡ Quick Start
 
-### Option A: PowerShell Setup (recommended)
+### Clone the repository
 
-```powershell
-# 1. Allow PowerShell scripts (one-time)
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-
-# 2. Run setup
-.\setup.ps1
-
-# Flags:
-.\setup.ps1 -SkipIngest   # No OpenAI key? Skip ingestion, still works in mock mode
-.\setup.ps1 -NoStart      # Install only, don't auto-start the server
+```
+git clone https://github.com/STPREETHI/dummy.git
+cd devpilot
 ```
 
-### Option B: Double-click `start.bat`
+---
 
-Just double-click `start.bat` in File Explorer. It handles everything.
+### Create virtual environment
 
-### Option C: Manual (Command Prompt / PowerShell)
-
-```cmd
-cd devpilot
-copy .env.example .env
-:: Edit .env and add your OPENAI_API_KEY
-
+```
 python -m venv .venv
 .venv\Scripts\activate
-pip install -r backend\requirements.txt
-
-:: Optional: ingest demo docs (needs OPENAI_API_KEY)
-cd data_ingestion && python ingest.py --demo && cd ..
-
-:: Start API
-cd backend
-uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 ```
 
 ---
 
-## ⚡ Quick Start — Docker
+### Install dependencies
 
-```bash
-copy .env.example .env   # Windows
-# or: cp .env.example .env  (Linux/Mac)
-# Edit .env and add OPENAI_API_KEY
-
-docker-compose up -d
-# API:       http://localhost:8000
-# Dashboard: http://localhost:3000
-
-# With Slack bot:
-docker-compose --profile slack up -d
+```
+pip install -r backend/requirements.txt
 ```
 
 ---
 
-## Environment Variables
+### Start the API server
 
-Edit `.env` (copied from `.env.example`):
-
-```env
-OPENAI_API_KEY=sk-...        # Required for full RAG; mock mode works without it
-SLACK_BOT_TOKEN=xoxb-...     # Optional: Slack bot
-SLACK_APP_TOKEN=xapp-...     # Optional: Slack socket mode
-GITHUB_TOKEN=ghp_...         # Optional: private GitHub repos
-
-# Defaults work for local dev — no need to change these
-VECTOR_STORE_PATH=./vector_store
-DB_PATH=./devpilot.db
+```
+uvicorn backend.main:app --reload
 ```
 
-> **No OpenAI key?** The API runs in **mock mode** with realistic pre-built answers for auth, payments, deployment, etc. Perfect for demos.
+Open:
 
----
-
-## API Endpoints
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| `GET`  | `/health` | System health + doc count |
-| `POST` | `/query` | Ask a question, get AI answer with sources |
-| `POST` | `/ingest` | Index documents/repos into vector store |
-| `GET`  | `/ingest/status/{job_id}` | Ingestion job status |
-| `GET`  | `/search?q=...` | Semantic search across all docs |
-| `GET`  | `/analytics/overview` | Team-wide knowledge gap analytics |
-| `GET`  | `/analytics/developer/{id}` | Individual dev stats |
-| `GET`  | `/analytics/hot-topics` | Topics generating most questions |
-| `GET`  | `/analytics/knowledge-gaps` | Areas needing better docs |
-| `POST` | `/onboarding/roadmap` | Generate personalized roadmap |
-| `GET`  | `/onboarding/status/{id}` | Dev's onboarding progress |
-| `POST` | `/slack/events` | Slack Events API webhook |
-
-**Swagger UI (browser):** http://localhost:8000/docs
-
-### Example Query
-
-```powershell
-# PowerShell
-Invoke-RestMethod -Uri http://localhost:8000/query -Method POST `
-  -ContentType "application/json" `
-  -Body '{"question":"How does auth work?","developer_id":"dev_alice"}'
-
-# curl (Git Bash / WSL)
-curl -X POST http://localhost:8000/query \
-  -H "Content-Type: application/json" \
-  -d '{"question":"How does auth work?","developer_id":"dev_alice"}'
+```
+http://localhost:8000/docs
 ```
 
 ---
 
-## Ingesting Your Codebase
+# 🔌 API Example
 
-```powershell
-.venv\Scripts\activate
-cd data_ingestion
+Ask DevPilot a question:
 
-# Local folder
-python ingest.py --source C:\path\to\your-project
+```
+POST /query
+```
 
-# GitHub repo
-python ingest.py --source https://github.com/your-org/repo --type github
+Example request:
 
-# Demo data (no real project needed)
-python ingest.py --demo
+```json
+{
+  "question": "How does authentication work?",
+  "developer_id": "dev_alice"
+}
+```
+
+Example response:
+
+```json
+{
+  "answer": "Authentication uses JWT tokens implemented in auth.py",
+  "sources": ["backend/auth.py"],
+  "confidence": 0.91
+}
 ```
 
 ---
 
-## React Dashboard
+# 📊 Impact
 
-```powershell
-npx create-react-app devpilot-ui
-cd devpilot-ui
-npm install recharts
-copy ..\frontend\DevPilotDashboard.jsx src\App.jsx
-npm start
-# Opens http://localhost:3000
+| Metric                        | Without DevPilot | With DevPilot  |
+| ----------------------------- | ---------------- | -------------- |
+| Onboarding time               | 2–3 months       | 2–3 weeks      |
+| Senior engineer interruptions | High             | Low            |
+| Documentation gaps            | Hidden           | Measured       |
+| Developer productivity        | Slow ramp-up     | Faster ramp-up |
+
+---
+
+# 🛠 Tech Stack
+
+### Backend
+
+* FastAPI
+* LangChain
+* FAISS
+* SQLite
+
+### AI
+
+* Retrieval-Augmented Generation (RAG)
+* Embeddings
+* Knowledge gap analytics
+
+### Integrations
+
+* Slack Bot
+* GitHub repository ingestion
+
+### Frontend
+
+* React
+* Recharts
+
+---
+
+# 🚀 Future Roadmap
+
+Planned features:
+
+* Codebase architecture visualization
+* AI debugging memory
+* Developer skill analytics
+* Pull-request knowledge extraction
+* Multi-repository intelligence
+
+---
+
+# 👥 Team
+
+**The Avengers**
+
+Hackathon Project — AI Developer Productivity
+
+---
+
+# ⭐ Why DevPilot Matters
+
+Software teams lose massive productivity because knowledge is trapped inside codebases.
+
+DevPilot turns that knowledge into **an accessible AI engineering mentor**.
+
+---
+
+# 💬 Demo Questions
+
+Try asking DevPilot:
+
+```
+How does authentication work?
+Where is the payment logic implemented?
+How is the database structured?
+What services depend on Redis?
 ```
 
 ---
 
-## Slack Bot
-
-1. Create app at [api.slack.com/apps](https://api.slack.com/apps)
-2. Enable Socket Mode → get `SLACK_APP_TOKEN`
-3. Add Bot Scopes: `app_mentions:read`, `chat:write`, `commands`, `im:history`
-4. Add slash commands: `/ask`, `/devpilot-status`
-5. Install to workspace → get `SLACK_BOT_TOKEN`
-6. Add both tokens to `.env`
-
-```powershell
-.venv\Scripts\activate
-cd integrations
-python slack_bot.py
-```
-
-**Usage:**
-```
-@devpilot How does the payment system work?
-/ask Where is the auth middleware?
-/devpilot-status
-```
-
----
-
-## Troubleshooting
-
-| Problem | Fix |
-|---------|-----|
-| `setup.ps1` is blocked | `Set-ExecutionPolicy RemoteSigned -Scope CurrentUser` |
-| `python` not found | Install from python.org — check "Add to PATH" |
-| `ModuleNotFoundError` | Activate venv: `.venv\Scripts\activate`, then reinstall deps |
-| Port 8000 in use | `netstat -ano \| findstr :8000` → `taskkill /PID <pid> /F` |
-| Running in mock mode | Set `OPENAI_API_KEY` in `.env` and restart |
-| FAISS install fails | `pip install faiss-cpu --prefer-binary` |
-
----
-
-## Hackathon Demo Script
-
-1. Start API (`.\setup.ps1 -SkipIngest` for instant start)
-2. Open `http://localhost:8000/docs` → POST `/query` → "How does auth work?"
-3. Show the response: JWT explanation + file paths + confidence score
-4. GET `/analytics/knowledge-gaps` → "Authentication is the #1 pain point"
-5. GET `/analytics/developer/dev_alice_001` → individual progress + recommendations
-6. POST `/onboarding/roadmap?developer_id=alice&role=backend` → personalized plan
-7. Close: "DevPilot cuts onboarding from 3 months to 3 weeks"
-
----
-
-## Impact Metrics
-
-| Metric | Before DevPilot | With DevPilot |
-|--------|----------------|---------------|
-| Time to first PR | 3–4 weeks | 1–2 weeks |
-| Senior eng interruptions/day | 8–12 | 2–4 |
-| Documentation gaps | Unknown | Measured & prioritized |
-| Onboarding progress visibility | None | Real-time dashboard |
-
----
-
-*Built with ❤️ by The Avengers — Hackathon 2024*
-=======
-# the-avengers
->>>>>>> 2d976fd1e6c007d6e9cba6d76eab5bc5284dc3b6
-#   d u m m y  
- 
